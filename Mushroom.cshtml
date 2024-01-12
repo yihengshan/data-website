@@ -1,0 +1,65 @@
+﻿@using WebMatrix.Data
+
+@{
+    var id = Request.QueryString["mushroom"];
+    var db = Database.Open("Mushroom");
+    var sql = "SELECT * FROM Family AS f JOIN Mushroom AS m ON m.MushroomFamily =f.FamilyID ";
+    var aa = db.QuerySingle(sql, id);
+    if (IsPost)
+    {
+        var itemIdToDelete = Request.Form["delete"];
+        var deleteQueryString = "DELETE FROM Items WHERE itemID = @0";
+
+        try
+        {
+            db.Execute(deleteQueryString, itemIdToDelete);
+            <div class="alert alert-success">You have deleted</div>
+        }
+        catch
+        {
+            <div class="alert alert-danger">Deletion failed</div>
+        }
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Details</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .jumbotron {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-top: 20px;
+            border: 1px solid #dee2e6;
+    </style>
+</head>
+<body>
+    <div class="jumbotron pt-1 pb-1 mt-2">
+        <h2 class="text-center">Order Details</h2>
+    </div>
+    @if (aa != null)
+    {
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@aa.MushroomFamily</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item">Order ID: @aa.name</li>
+                                <li class="list-group-item">Store ID: @aa.class</li>
+                                <li clas
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+</body>
+</html>
